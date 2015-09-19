@@ -1,0 +1,6 @@
+#!/bin/bash
+CJD_ROOT=/home/suriya/install/cjdns
+$CJD_ROOT/tools/dumptable | egrep -o '\w+\.k' | while read line
+do
+	$CJD_ROOT/publictoip6 $line
+done
