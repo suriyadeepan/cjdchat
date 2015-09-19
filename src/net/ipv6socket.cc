@@ -12,6 +12,7 @@
 #include <arpa/inet.h>
 
 #include "ipv6socket.h"
+#include "../cjdchat.h"
 
 //Based on http://www.abc.se/~m6695/udp.html
 

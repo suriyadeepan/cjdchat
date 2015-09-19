@@ -38,6 +38,12 @@ int main(){
 	
 	// get the peers (IPV6)
 	peer_count = cjdns_getPeers(&ip_list);
+
+	if(peer_count == -1){
+		printf("\n>> ERROR : check if cjdroute is running\n>> Command : cjstart\n");
+		return -1;
+	}
+
 	printf("\n>> peer_count : %d\n",peer_count);
 	// alloc memory for model
 	model = (Node**)malloc(sizeof(Node *) * peer_count); 	
@@ -45,12 +51,13 @@ int main(){
 	model_init(model,&ip_list);
 	model_echo(model,peer_count);
 
+	// create a thread that listens to port LISTEN_PORT
 	pthread_t listen_thread;
 	pthread_create(&listen_thread, NULL, ipv6socket_listen, NULL);
 
 	while(1);
 
 	pthread_exit(NULL);
-
 	return 0;
+
 }
