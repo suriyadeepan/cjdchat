@@ -1,45 +1,36 @@
-#include "stdio.h"
-#include <iostream>
-#include <vector>
-#include <string>
+#include "cjdns.h"
 
 using namespace std;
 
-int main(){
-
+int cjdns_getPeers(vector<string> *ip_list){
 
 	FILE *fp;
-	int status;
 	char path[100];
 
-	vector<string> ip_list;
-
 	fp = popen("./loop_dumptable","r");
-	//fp = popen("$HOME/install/cjdns/tools/dumptable");
+	
 	if (fp == NULL)
 		/* Handle error */;
 
 
-	while (fgets(path, 100, fp) != NULL){
-			//printf("%s", path);
-			ip_list.push_back(path);
-	}
+	while (fgets(path, 100, fp) != NULL)
+			ip_list->push_back(path);
+	
+	pclose(fp);
+	/*printf("-----------------");
+	for(int i=0;i<ip_list->size();i++)
+		printf("\n%s",(*ip_list)[i].c_str());
+	printf("-----------------\n");
+	*/
 
+	return ip_list->size();
+}
 
-	status = pclose(fp);
-	if (status == -1) {
-		/* Error reported by pclose() */
-	} else {
-		/* Use macros described under wait() to inspect `status' in order
-			 to determine success/failure of command executed by popen() */
-	}
+/*int main(){
 
-
-	printf("-----------------");
-	for(int i=0;i<ip_list.size();i++)
-		printf("\n%s",ip_list[i].c_str());
-	printf("-----------------");
+	vector<string> ip_list;
+	cjdns_getPeers(&ip_list);
 
 	return 0;
 
-}
+}*/
