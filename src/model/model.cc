@@ -1,6 +1,7 @@
 #include "model.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 
 
 // >>-------------------------------------<<
@@ -14,22 +15,30 @@
 //
 int model_init(Node* model[], vector<string> *ip_list){
 
-	printf("\nIP_LIST_SIZE : %d\n",ip_list->size());
-	/*for(int i=0;i<ip_list->size();i++){
-		model[i]->address = (*ip_list)[i];
-	}*/
+	char tstring[40];
+	
 	for(int i=0;i<ip_list->size();i++){
-		model[i] = model_newNode((*ip_list)[i]);
-		//model[i] = tnode;
+		Node * tnode = (Node*)malloc(sizeof(*tnode));
+		strcpy(tnode->address , (*ip_list)[i].c_str());
+		model[i] = tnode;
 	}
 
 }
 
-Node* model_newNode(string str){
-	Node * tnode = (Node*)malloc(sizeof(*tnode));
-	tnode->address = str;
-	return  tnode;
+void model_echo(Node* model[],int peer_count){
+
+	printf("\n---------------");
+	for(int i=0;i< peer_count;i++)
+		printf("\n%s %s %s",model[i]->address, model[i]->nick,model[i]->chan);
+	printf("---------------\n");
 }
+
+/*Node* model_newNode(){
+	Node * tnode = (Node*)malloc(sizeof(*tnode));
+	//tnode->address = str;
+	tnode->chan = 5;
+	return  tnode;
+}*/
 
 
 /*int main(){

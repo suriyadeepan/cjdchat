@@ -3,22 +3,23 @@
 #include "stdio.h"
 #include "stdlib.h"
 
+#include "cjdns/cjdns.h"
+#include "model/model.h"
+
 #include "iostream"
 #include "string"
 #include "vector"
 
-#include "cjdns/cjdns.h"
-#include "model/model.h"
+using namespace std;
 
 // list of peers(ipv6)
 vector<string> ip_list;
 // pointer to model (array of nodes)
 Node **model = NULL;
+int peer_count = 0;
 
 //
-using namespace std;
 
-int peer_count = 0;
 
 int main(){
 
@@ -39,9 +40,8 @@ int main(){
 	// alloc memory for model
 	model = (Node**)malloc(sizeof(Node *) * peer_count); 	
 	// update model with peers' IPV6
-	/*for(int i=0;i<peer_count;i++)
-		model[i] = NULL;*/
 	model_init(model,&ip_list);
+	model_echo(model,peer_count);
 
 	return 0;
 }

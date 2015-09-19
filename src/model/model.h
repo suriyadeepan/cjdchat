@@ -9,14 +9,15 @@ using namespace std;
 
 typedef struct _Node{
 
-	string address;
-	char nick[40];
-	int chan[10];
+	char address[40];
+	char nick[10];
+	char chan[100];
 
 } Node;
 
 
 int model_init(Node **, vector<string> *);
-Node* model_newNode(string);
+void model_echo(Node **,int);
+Node* model_newNode();
 
 #endif
