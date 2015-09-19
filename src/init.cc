@@ -2,9 +2,11 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "pthread.h"
 
 #include "cjdns/cjdns.h"
 #include "model/model.h"
+#include "net/ipv6socket.h"
 
 #include "iostream"
 #include "string"
@@ -42,6 +44,13 @@ int main(){
 	// update model with peers' IPV6
 	model_init(model,&ip_list);
 	model_echo(model,peer_count);
+
+	pthread_t listen_thread;
+	pthread_create(&listen_thread, NULL, ipv6socket_listen, NULL);
+
+	while(1);
+
+	pthread_exit(NULL);
 
 	return 0;
 }

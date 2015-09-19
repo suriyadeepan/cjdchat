@@ -3,10 +3,9 @@
 
 #define LISTEN_PORT 5556
 
-/*char op[50];
 
-get_output(char *str, char *op);*/
-
+void *ipv6socket_listen(void *);
+void *sendMsg(void *);
 
 
 #endif

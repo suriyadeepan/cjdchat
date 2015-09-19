@@ -1,2 +1,5 @@
 all: *.cc
-	g++ *.cc -o net.out
+	g++ -Wno-write-strings -c *.cc -lpthread 
+
+clean: 
+	rm *.o
