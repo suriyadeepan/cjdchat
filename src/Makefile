@@ -1,7 +1,7 @@
 all:
 	cd cjdns; make
 	cd model; make
-	#g++ cjdns/*.o model/*.o *.cc -o init.out
+	g++ cjdns/*.o model/*.o *.cc -o init.out
 
 clean:
 	cd cjdns; make clean

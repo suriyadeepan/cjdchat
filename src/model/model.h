@@ -2,6 +2,8 @@
 #define MODEL_H
 
 #include "../cjdchat.h" //--> include all the ENUM, global constants in src/cjdchat.h
+#include "vector"
+#include "string"
 
 using namespace std;
 
@@ -14,6 +16,7 @@ typedef struct _Node{
 } Node;
 
 
-int model_init(vector<string> *,Node **);
+int model_init(Node **, vector<string> *);
+Node* model_newNode(string);
 
 #endif

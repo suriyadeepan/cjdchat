@@ -1,4 +1,5 @@
 #include "cjdns.h"
+#include "stdio.h"
 
 using namespace std;
 
@@ -7,7 +8,7 @@ int cjdns_getPeers(vector<string> *ip_list){
 	FILE *fp;
 	char path[100];
 
-	fp = popen("./loop_dumptable","r");
+	fp = popen("/home/suriya/install/cjdns/tools/loop_dumptable","r");
 	
 	if (fp == NULL)
 		/* Handle error */;

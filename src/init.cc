@@ -1,16 +1,27 @@
 #include "cjdchat.h"
 
-#include "cjdns.h"
-#include "model.h"
+#include "stdio.h"
+#include "stdlib.h"
 
+#include "iostream"
+#include "string"
+#include "vector"
+
+#include "cjdns/cjdns.h"
+#include "model/model.h"
+
+// list of peers(ipv6)
+vector<string> ip_list;
+// pointer to model (array of nodes)
+Node **model = NULL;
 
 //
+using namespace std;
 
 int peer_count = 0;
 
 int main(){
 
-	vector<string> ip_list;
 
 // >>-------------------------------------<<
 // int cjdns_getPeers(vector<string> *ip_list)
@@ -22,8 +33,15 @@ int main(){
 // >>-------------------------------------<<
 
 	
+	// get the peers (IPV6)
 	peer_count = cjdns_getPeers(&ip_list);
-	printf("\npeer_count : %d\n",peer_count);
+	printf("\n>> peer_count : %d\n",peer_count);
+	// alloc memory for model
+	model = (Node**)malloc(sizeof(Node *) * peer_count); 	
+	// update model with peers' IPV6
+	/*for(int i=0;i<peer_count;i++)
+		model[i] = NULL;*/
+	model_init(model,&ip_list);
 
 	return 0;
 }
