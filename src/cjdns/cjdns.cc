@@ -57,8 +57,8 @@ int cjdns_getPeers(vector<string> *ip_list){
 	char path[100];
 
 	// check if cjdns is running
-	if(proc_find("cjdroute") == -1)
-		return -1;
+	/*if(proc_find("cjdroute") == -1)
+		return -1;*/
 
 	fp = popen("/home/suriya/install/cjdns/tools/loop_dumptable","r");
 	
@@ -66,8 +66,10 @@ int cjdns_getPeers(vector<string> *ip_list){
 		/* Handle error */;
 
 
-	while (fgets(path, 100, fp) != NULL)
+	while (fgets(path, 100, fp) != NULL){
+			strtok(path,"\n");
 			ip_list->push_back(path);
+	}
 	
 	pclose(fp);
 	/*printf("-----------------");

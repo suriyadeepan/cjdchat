@@ -10,7 +10,7 @@ using namespace std;
 typedef struct _Node{
 
 	char address[40];
-	char nick[10];
+	char nick[15];
 	char chan[100];
 
 } Node;
@@ -19,5 +19,6 @@ typedef struct _Node{
 int model_init(Node **, vector<string> *);
 void model_echo(Node **,int);
 Node* model_newNode();
+void model_updateNick(Node **,char *);
 
 #endif

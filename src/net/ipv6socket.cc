@@ -13,15 +13,76 @@
 
 #include "ipv6socket.h"
 #include "../cjdchat.h"
+#include "../model/model.h"
+#include "../cntl/cntl.h"
+//#include "../view/view.h"
 
 //Based on http://www.abc.se/~m6695/udp.html
+
+extern Node **model;
+extern int peer_count;
+extern char SELF_NICK[15];
 
 void error(char *msg) {
 	perror(msg);
 	exit(1);
 }
 
-void *sendMsg(void *ipv6_addr){
+void *ipv6socket_broadcast(void *msg){
+
+	char *message;
+	char *peer_ipv6;  
+
+	message = (char *)msg;
+
+	int sockfd, portno;
+	struct hostent *server;
+
+	struct sockaddr_in6 serv_addr;
+	int slen = sizeof(struct sockaddr_in6);
+	int n;
+
+	portno = LISTEN_PORT;
+
+
+	for(int i=1;i<peer_count;i++){
+
+		//Sockets Layer Call: socket()
+		sockfd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+		if (sockfd < 0)
+			error("ERROR opening socket");
+
+		//Sockets Layer Call: gethostbyname2()
+		server = gethostbyname2(model[i]->address,AF_INET6);
+		if (server == NULL) {
+			fprintf(stderr, "ERROR, no such host\n");
+			exit(0);
+		}
+
+		memset((char *) &serv_addr, 0, sizeof(serv_addr));
+		serv_addr.sin6_family = AF_INET6;
+		serv_addr.sin6_port = htons(portno);
+		serv_addr.sin6_flowinfo = 0;
+		memmove((char *) &serv_addr.sin6_addr.s6_addr, (char *) server->h_addr, server->h_length);
+
+
+		//Sockets Layer Call: sendto()
+		n = sendto(sockfd, message, strlen(message)+1, 0, (struct sockaddr *) &serv_addr, slen);
+		if (n < 0)
+			error("ERROR writing to socket");
+
+		//printf("\nString sent to server...\n");
+
+		//Sockets Layer Call: close()
+		close(sockfd);
+	}
+
+}
+
+
+
+
+void *ipv6socket_joinMsg(void *ipv6_addr){
 
 	char *peer_ipv6;  
 
@@ -29,7 +90,10 @@ void *sendMsg(void *ipv6_addr){
 
 	int sockfd, portno;
 	struct hostent *server;
-	char buffer[256] = "This is a string from client!";
+
+	char buffer[256] = "/join general";
+	sprintf(buffer,"/join general %s",SELF_NICK);
+
 	struct sockaddr_in6 serv_addr;
 	int slen = sizeof(struct sockaddr_in6);
 	int n;
@@ -83,6 +147,10 @@ void *ipv6socket_listen(void *){
 
 	printf("\nIPv6 UDP Server Started...\n");
 
+/*	printf("\nEcho from listen thread:\n");
+	model_echo(model,peer_count);
+	printf("\n");*/
+
 	while(1){
 		//Sockets Layer Call: socket()	
 		sockfd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
@@ -108,13 +176,17 @@ void *ipv6socket_listen(void *){
 		if (n < 0)
 			error("ERROR reading from socket");
 
+		char output[100];
+		int result = cntl_splitter(buffer,output);
+		//printf("\nRESULT : %d and MSG : %s",result,output); 
+
 		//Sockets Layer Call: inet_ntop()
 		inet_ntop(AF_INET6, &(si_other.sin6_addr),client_addr_ipv6, 100);
 		printf("Incoming connection from client having address: %s\n",client_addr_ipv6);
-		//strcpy(ipv6_addr , client_addr_ipv6);
+		//strcpy(ipv6_addr , client_addr_ipv6);  
 	
 		// send back to peer
-		pthread_create(&send_thread, NULL, sendMsg, (void *)client_addr_ipv6);
+		//pthread_create(&send_thread, NULL, ipv6socket_send, (void *)client_addr_ipv6);
 
 
 		printf("Message from client: %s\n", buffer);

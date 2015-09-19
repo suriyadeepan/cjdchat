@@ -3,10 +3,12 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "pthread.h"
+#include "string.h"
 
 #include "cjdns/cjdns.h"
 #include "model/model.h"
 #include "net/ipv6socket.h"
+#include "cntl/cntl.h"
 
 #include "iostream"
 #include "string"
@@ -19,6 +21,8 @@ vector<string> ip_list;
 // pointer to model (array of nodes)
 Node **model = NULL;
 int peer_count = 0;
+
+char SELF_NICK[15];
 
 //
 
@@ -39,10 +43,15 @@ int main(){
 	// get the peers (IPV6)
 	peer_count = cjdns_getPeers(&ip_list);
 
-	if(peer_count == -1){
+	printf("---------------");
+	for(int i=0;i<peer_count;i++)
+		printf("\nIP : %s",ip_list[i].c_str());
+	printf("\n---------------");
+
+	/*if(peer_count == -1){
 		printf("\n>> ERROR : check if cjdroute is running\n>> Command : cjstart\n");
 		return -1;
-	}
+	}*/
 
 	printf("\n>> peer_count : %d\n",peer_count);
 	// alloc memory for model
@@ -54,6 +63,23 @@ int main(){
 	// create a thread that listens to port LISTEN_PORT
 	pthread_t listen_thread;
 	pthread_create(&listen_thread, NULL, ipv6socket_listen, NULL);
+
+	// get nick
+	printf("\n>> Enter nick : ");
+	scanf("%s",SELF_NICK);
+	pthread_t send_thread;
+
+	model_echo(model,peer_count);
+	for(int i=1;i<peer_count;i++){
+		pthread_create(&send_thread, NULL, ipv6socket_joinMsg,(void *)(model[i]->address));
+	}
+
+	char msg[100];
+	printf("\n>>");
+	scanf("%s",msg);
+	pthread_t broadcast_thread;
+	pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
+
 
 	while(1);
 

@@ -29,9 +29,14 @@ void model_echo(Node* model[],int peer_count){
 
 	printf("\n---------------");
 	for(int i=0;i< peer_count;i++)
-		printf("\n%s %s %s",model[i]->address, model[i]->nick,model[i]->chan);
+		printf("%d.%s",i,model[i]->address);//, model[i]->nick,model[i]->chan);
 	printf("---------------\n");
 }
+
+void model_updateNick(Node* model[],char *nick){
+	strcpy((*model)[0].nick,nick);
+}
+
 
 /*Node* model_newNode(){
 	Node * tnode = (Node*)malloc(sizeof(*tnode));
