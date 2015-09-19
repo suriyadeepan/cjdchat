@@ -36,8 +36,8 @@ int cntl_splitter(char* input_string,char* output_message){
 
 	int i,j,k;
 
-	if(input_string[0] != '/')
-		printf("Invalid form");
+	/*if(input_string[0] != '/')
+		printf("Invalid form");*/
 	i=1;
 	while(input_string[i]!=' ' && input_string[i] != '\0'){
 		command[i-1]=input_string[i];
