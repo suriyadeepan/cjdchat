@@ -126,7 +126,7 @@ void *ipv6socket_joinMsg(void *ipv6_addr){
 	if (n < 0)
 		error("ERROR writing to socket");
 
-	printf("\nString sent to server...\n");
+	
 
 	//Sockets Layer Call: close()
 	close(sockfd);
@@ -145,7 +145,7 @@ void *ipv6socket_listen(void *){
 
 	pthread_t send_thread;
 
-	printf("\nIPv6 UDP Server Started...\n");
+	printf("\nListening for incoming connections...\n");
 
 /*	printf("\nEcho from listen thread:\n");
 	model_echo(model,peer_count);
@@ -182,14 +182,14 @@ void *ipv6socket_listen(void *){
 
 		//Sockets Layer Call: inet_ntop()
 		inet_ntop(AF_INET6, &(si_other.sin6_addr),client_addr_ipv6, 100);
-		printf("Incoming connection from client having address: %s\n",client_addr_ipv6);
+		printf("Address: %s\n",client_addr_ipv6);
 		//strcpy(ipv6_addr , client_addr_ipv6);  
 	
 		// send back to peer
 		//pthread_create(&send_thread, NULL, ipv6socket_send, (void *)client_addr_ipv6);
 
 
-		printf("Message from client: %s\n", buffer);
+		printf("Message from Node: %s\n", buffer);
 
 		//Sockets Layer Call: close()
 		close(sockfd);
