@@ -74,12 +74,13 @@ int main(){
 		pthread_create(&send_thread, NULL, ipv6socket_joinMsg,(void *)(model[i]->address));
 	}
 
-	char msg[100];
-	printf("\n>>");
-	scanf("%s",msg);
-	pthread_t broadcast_thread;
-	pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
-
+	while(1){
+	  char msg[100];
+	  printf("\n>>");
+	  scanf("%s",msg);
+	  pthread_t broadcast_thread;
+	  pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
+	}
 
 	while(1);
 
