@@ -182,14 +182,16 @@ void *ipv6socket_listen(void *){
 
 		//Sockets Layer Call: inet_ntop()
 		inet_ntop(AF_INET6, &(si_other.sin6_addr),client_addr_ipv6, 100);
-		printf("Address: %s\n",client_addr_ipv6);
+		//printf("Address: %s\n",client_addr_ipv6);
 		//strcpy(ipv6_addr , client_addr_ipv6);  
 	
 		// send back to peer
 		//pthread_create(&send_thread, NULL, ipv6socket_send, (void *)client_addr_ipv6);
 
 
-		printf("Message from Node: %s\n", buffer);
+		char nick[15];
+	 	model_ipToNick(client_addr_ipv6,nick);
+		printf(">>> %s: %s\n",nick,buffer);
 
 		//Sockets Layer Call: close()
 		close(sockfd);

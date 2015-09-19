@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include "string.h"
 
+extern int peer_count;
+extern Node** model;
 
 // >>-------------------------------------<<
 // int cjdns_getPeers(vector<string> *ip_list)
@@ -20,6 +22,8 @@ int model_init(Node* model[], vector<string> *ip_list){
 	for(int i=0;i<ip_list->size();i++){
 		Node * tnode = (Node*)malloc(sizeof(*tnode));
 		strcpy(tnode->address , (*ip_list)[i].c_str());
+		strcpy(tnode->nick , "dummy");
+		strcpy(tnode->chan , "dummy");
 		model[i] = tnode;
 	}
 
@@ -37,6 +41,13 @@ void model_updateNick(Node* model[],char *nick){
 	strcpy((*model)[0].nick,nick);
 }
 
+void model_ipToNick(char *ip, char *nick){
+	
+	for(int i=0;i< peer_count;i++)
+		if(strcmp(ip,model[i]->address) == 0)
+			strcpy(nick,model[i]->nick);
+
+}
 
 /*Node* model_newNode(){
 	Node * tnode = (Node*)malloc(sizeof(*tnode));
