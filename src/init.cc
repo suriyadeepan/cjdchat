@@ -46,17 +46,11 @@ int main(){
 	pthread_t getPeers_thread;
 	pthread_create(&getPeers_thread, NULL, cjdns_trackPeers, NULL);
 
-	printf("---------------");
-	for(int i=0;i<peer_count;i++)
-		printf("\nIP : %s",ip_list[i].c_str());
-	printf("\n---------------");
-
 	/*if(peer_count == -1){
 		printf("\n>> ERROR : check if cjdroute is running\n>> Command : cjstart\n");
 		return -1;
 	}*/
 
-	printf("\n>> peer_count : %d\n",peer_count);
 	// alloc memory for model
 	model = (Node**)malloc(sizeof(Node *) * peer_count); 	
 	// update model with peers' IPV6
@@ -72,7 +66,7 @@ int main(){
 	scanf("%s",SELF_NICK);
 	pthread_t send_thread;
 
-	model_echo(model,peer_count);
+	//model_echo(model,peer_count);
 	for(int i=1;i<peer_count;i++){
 		pthread_create(&send_thread, NULL, ipv6socket_joinMsg,(void *)(model[i]->address));
 	}
@@ -91,7 +85,7 @@ int main(){
 
 		int msg_stat = cntl_splitter(msg,formatted_msg);
 
-		printf("\nMSG_STAT : %d",msg_stat);
+		//printf("\nMSG_STAT : %d",msg_stat);
 
 		switch(msg_stat){
 
