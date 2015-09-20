@@ -78,9 +78,13 @@ int main(){
 	}
 
 	while(1){
+
+		int x;
 	  char msg[100], formatted_msg[100];
 	  printf("\n>>");
-	  scanf("%s",msg);
+
+		fgets(msg, 100, stdin);
+	  scanf("%d",&x);
 
 	  pthread_t broadcast_thread, unicast_thread;
 
@@ -90,8 +94,9 @@ int main(){
 		printf("\nMSG_STAT : %d",msg_stat);
 
 		switch(msg_stat){
+
 			case MSG: // private message
-				pthread_create(&unicast_thread, NULL, ipv6socket_unicast,(void *)(formatted_msg));
+				pthread_create(&unicast_thread, NULL, ipv6socket_unicast,(void *)(msg));
 				break;
 
 
@@ -103,8 +108,9 @@ int main(){
 
 			default:
 				pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
-		}// switch ends here
+		}// switch ends here*/
 
+		//pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
 
 	}
 
