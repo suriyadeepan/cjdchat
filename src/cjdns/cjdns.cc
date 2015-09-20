@@ -7,9 +7,30 @@
 #include "dirent.h"
 #include "sys/types.h"
 
+#include "vector"
+#include "string"
+
+#include "../model/model.h"
+
 using namespace std;
 
-pid_t proc_find(const char* name) 
+//extern Node **model;
+//extern int peer_count;
+extern vector<string> ip_list;
+
+void *cjdns_trackPeers(void *){
+	
+	while(1){
+		sleep(10);
+		ip_list.clear();
+		cjdns_getPeers(&ip_list);
+		model_peerUpdate(&ip_list);
+	}
+
+}
+
+
+/*pid_t proc_find(const char* name) 
 {
     DIR* dir;
     struct dirent* ent;
@@ -22,20 +43,16 @@ pid_t proc_find(const char* name)
     }
 
     while((ent = readdir(dir)) != NULL) {
-        /* if endptr is not a null character, the directory is not
-         * entirely numeric, so ignore it */
         long lpid = strtol(ent->d_name, &endptr, 10);
         if (*endptr != '\0') {
             continue;
         }
 
-        /* try to open the cmdline file */
         snprintf(buf, sizeof(buf), "/proc/%ld/cmdline", lpid);
         FILE* fp = fopen(buf, "r");
 
         if (fp) {
             if (fgets(buf, sizeof(buf), fp) != NULL) {
-                /* check the first token in the file, the program name */
                 char* first = strtok(buf, " ");
                 if (!strcmp(first, name)) {
                     fclose(fp);
@@ -50,7 +67,9 @@ pid_t proc_find(const char* name)
 
     closedir(dir);
     return -1;
-}
+}*/
+
+
 int cjdns_getPeers(vector<string> *ip_list){
 
 	FILE *fp;

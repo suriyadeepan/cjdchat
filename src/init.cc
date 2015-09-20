@@ -43,6 +43,9 @@ int main(){
 	// get the peers (IPV6)
 	peer_count = cjdns_getPeers(&ip_list);
 
+	pthread_t getPeers_thread;
+	pthread_create(&getPeers_thread, NULL, cjdns_trackPeers, NULL);
+
 	printf("---------------");
 	for(int i=0;i<peer_count;i++)
 		printf("\nIP : %s",ip_list[i].c_str());

@@ -177,7 +177,8 @@ void *ipv6socket_listen(void *){
 			error("ERROR reading from socket");
 
 		char output[100];
-		int result = cntl_splitter(buffer,output);
+		char nick[15];
+		int msg_stat = cntl_splitter(buffer,output);
 		//printf("\nRESULT : %d and MSG : %s",result,output); 
 
 		//Sockets Layer Call: inet_ntop()
@@ -189,9 +190,16 @@ void *ipv6socket_listen(void *){
 		//pthread_create(&send_thread, NULL, ipv6socket_send, (void *)client_addr_ipv6);
 
 
-		char nick[15];
-	 	model_ipToNick(client_addr_ipv6,nick);
-		printf(">>> %s: %s\n",nick,buffer);
+		if( msg_stat == JOIN ){
+			sscanf(output,"%s %s",buffer,nick);
+			printf("\n>> @%s joined network in channel #general\n",nick);
+			model_addNick(client_addr_ipv6,nick);
+		}
+
+		else{
+			model_ipToNick(client_addr_ipv6,nick);
+			printf("\n>> @%s :: %s\n",nick,buffer);
+		}
 
 		//Sockets Layer Call: close()
 		close(sockfd);

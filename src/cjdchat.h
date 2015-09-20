@@ -3,5 +3,7 @@
 
 #define LISTEN_PORT 5556
 
+enum {JOIN,MSG,PART,PARTALL,IGNORE,QUIT,HELP};
+
 
 #endif

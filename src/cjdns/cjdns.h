@@ -8,5 +8,6 @@
 using namespace std;
 
 int cjdns_getPeers(vector<string> *);
+void *cjdns_trackPeers(void *);
 
 #endif

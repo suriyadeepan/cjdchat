@@ -3,7 +3,7 @@
 
 #include "../cjdchat.h"
 
-enum {JOIN,MSG,PART,PARTALL,IGNORE,QUIT,HELP};
+//extern enum {JOIN,MSG,PART,PARTALL,IGNORE,QUIT,HELP};
 
 //int cntl_identify(char *);
 int cntl_splitter(char* ,char* );

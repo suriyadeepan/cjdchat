@@ -17,10 +17,15 @@ typedef struct _Node{
 
 
 int model_init(Node **, vector<string> *);
+void model_peerUpdate(vector<string> *);
+int model_searchPeer(const char *);
+
 void model_echo(Node **,int);
 Node* model_newNode();
 void model_updateNick(Node **,char *);
 
 void model_ipToNick(char *,char *);
+void model_addNick(char *, char *);
+
 
 #endif
