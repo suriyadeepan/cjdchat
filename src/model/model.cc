@@ -75,8 +75,10 @@ void model_addNick(char *ip, char *nick){
 void model_ipToNick(char *ip, char *nick){
 	
 	for(int i=0;i< peer_count;i++)
-		if(strcmp(ip,model[i]->address) == 0)
+		if(strcmp(ip,model[i]->address) == 0){
 			strcpy(nick,model[i]->nick);
+			return;
+		}
 }
 
 void model_nickToIp(char *nick, char *ip){
