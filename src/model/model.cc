@@ -54,8 +54,10 @@ void model_peerUpdate(vector<string> *ip_list){
 void model_echo(Node* model[],int peer_count){
 
 	printf("\n---------------");
-	for(int i=0;i< peer_count;i++)
-		printf("\n%d.%s",i,model[i]->address);//, model[i]->nick,model[i]->chan);
+	for(int i=0;i< peer_count;i++){
+		printf("\n%d.%s %s",i,model[i]->address, model[i]->nick);//,model[i]->chan);
+	}
+	
 	printf("\n---------------");
 }
 
