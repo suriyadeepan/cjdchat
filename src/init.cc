@@ -78,14 +78,37 @@ int main(){
 	}
 
 	while(1){
-	  char msg[100];
+	  char msg[100], formatted_msg[100];
 	  printf("\n>>");
 	  scanf("%s",msg);
-	  pthread_t broadcast_thread;
-	  pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
+
+	  pthread_t broadcast_thread, unicast_thread;
+
+
+		int msg_stat = cntl_splitter(msg,formatted_msg);
+
+		printf("\nMSG_STAT : %d",msg_stat);
+
+		switch(msg_stat){
+			case MSG: // private message
+				pthread_create(&unicast_thread, NULL, ipv6socket_unicast,(void *)(formatted_msg));
+				break;
+
+
+			case QUIT:
+				printf("\n>> @%s quit the network\n",SELF_NICK);
+				pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
+				return 0;
+				break;
+
+			default:
+				pthread_create(&broadcast_thread, NULL, ipv6socket_broadcast,(void *)(msg));
+		}// switch ends here
+
+
 	}
 
-	while(1);
+	//while(1);
 
 	pthread_exit(NULL);
 	return 0;

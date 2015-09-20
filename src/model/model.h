@@ -25,6 +25,7 @@ Node* model_newNode();
 void model_updateNick(Node **,char *);
 
 void model_ipToNick(char *,char *);
+void model_nickToIp(char *,char *);
 void model_addNick(char *, char *);
 
 

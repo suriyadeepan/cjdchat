@@ -10,4 +10,4 @@ clean:
 	cd model; make clean
 	cd net; make clean
 	cd cntl; make clean
-	rm *.out *.o
+	rm *.out 

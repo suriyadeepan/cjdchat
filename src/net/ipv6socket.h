@@ -5,6 +5,7 @@
 void *ipv6socket_listen(void *);
 void *ipv6socket_joinMsg(void *);
 void *ipv6socket_broadcast(void *);
+void *ipv6socket_unicast(void *);
 
 
 #endif

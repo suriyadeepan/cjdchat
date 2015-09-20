@@ -75,8 +75,18 @@ void model_ipToNick(char *ip, char *nick){
 	for(int i=0;i< peer_count;i++)
 		if(strcmp(ip,model[i]->address) == 0)
 			strcpy(nick,model[i]->nick);
-
 }
+
+void model_nickToIp(char *nick, char *ip){
+	
+	for(int i=0;i< peer_count;i++)
+		if(strcmp(nick,model[i]->nick) == 0){
+			strcpy(ip,model[i]->address);
+			return;
+		}
+	strcpy(ip,"00::00");
+}
+
 
 int model_searchPeer(const char *ip){
 	

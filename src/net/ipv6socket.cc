@@ -28,10 +28,23 @@ void error(char *msg) {
 	exit(1);
 }
 
+void *ipv6socket_unicast(void *msg){
+
+	char *raw_msg = (char *)msg;
+	char nick[15];
+	char message[100];
+	char peer_ipv6[40];
+
+	sscanf(raw_msg,"%s %s",nick,message);
+
+	model_nickToIp(nick,peer_ipv6);
+	printf("\n$ Internal Message : Unicast %s to %s @ %s\n",nick,message,peer_ipv6);
+
+}
+
 void *ipv6socket_broadcast(void *msg){
 
 	char *message;
-	char *peer_ipv6;  
 
 	message = (char *)msg;
 
@@ -189,16 +202,27 @@ void *ipv6socket_listen(void *){
 		// send back to peer
 		//pthread_create(&send_thread, NULL, ipv6socket_send, (void *)client_addr_ipv6);
 
+		switch(msg_stat){
 
-		if( msg_stat == JOIN ){
-			sscanf(output,"%s %s",buffer,nick);
-			printf("\n>> @%s joined network in channel #general\n",nick);
-			model_addNick(client_addr_ipv6,nick);
-		}
+			case JOIN:
+				sscanf(output,"%s %s",buffer,nick);
+				printf("\n>> @%s joined network in channel #general\n",nick);
+				model_addNick(client_addr_ipv6,nick);
+				break;
 
-		else{
-			model_ipToNick(client_addr_ipv6,nick);
-			printf("\n>> @%s :: %s\n",nick,buffer);
+			case QUIT:
+				model_ipToNick(client_addr_ipv6,nick);
+				printf("\n>> @%s quit the network\n",nick);
+				break;
+
+			case MSG:
+				model_ipToNick(client_addr_ipv6,nick);
+				printf("\n>> @%s <private> :: %s\n",nick,buffer);
+				break;
+
+			default:
+				model_ipToNick(client_addr_ipv6,nick);
+				printf("\n>> @%s :: %s\n",nick,buffer);
 		}
 
 		//Sockets Layer Call: close()

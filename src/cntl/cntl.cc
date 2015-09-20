@@ -23,13 +23,16 @@ int cntl_identify(char input_command[]){
 	else if(!strcmp(input_command,"help"))
 		return HELP;
 
-
 }
 
 
 
 
 int cntl_splitter(char* input_string,char* output_message){
+
+
+	if(input_string[0] != '/')
+		return -1;
 
 	char command[10]={'\0'},message[50]={'\0'};
 	int n=strlen(input_string),result_command;
@@ -51,6 +54,7 @@ int cntl_splitter(char* input_string,char* output_message){
 	}
 
 	strcpy(output_message,message);
+
 	result_command = cntl_identify(command);
 	return result_command;
 }
